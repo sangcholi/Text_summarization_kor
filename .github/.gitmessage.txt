@@ -1,0 +1,15 @@
+feat: 요약 내용
+
+feat: 새로운 기능 제안
+fix: 버그 수정
+docs: 문서
+style: 코드 스타일 변화(like indent, import..)
+refactor: refactoring
+test: 코드 테스트
+chore: about build or deploy(not changes code)
+
+
+<상세 설명>
+
+Resolves: #
+See also: #
