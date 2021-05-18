@@ -17,3 +17,5 @@ RUN pip install -r requirements.txt
 RUN pip install torchtext==0.8.1
 RUN python3 download_binary.py
 
+ENTRYPOINT [ "python3" ]
+CMD [ "./infer.py" ]
