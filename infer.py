@@ -5,14 +5,21 @@ from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
+
 def load_model():
     model = BartForConditionalGeneration.from_pretrained('./kobart_summary')
     # tokenizer = get_kobart_tokenizer()
     return model
 
-    
+
 model = load_model()
 tokenizer = get_kobart_tokenizer()
+
+
+@app.route("/health.json")
+def health():
+    return jsonify({"status": "UP"}), 200
+
 
 @app.route('/', methods=['POST'])
 def summarization():
@@ -23,10 +30,12 @@ def summarization():
     input_ids = tokenizer.encode(text)
     input_ids = torch.tensor(input_ids)
     input_ids = input_ids.unsqueeze(0)
-    output = model.generate(input_ids, eos_token_id=1, max_length=512, num_beams=5)
+    output = model.generate(input_ids, eos_token_id=1,
+                            max_length=512, num_beams=5)
     output = tokenizer.decode(output[0], skip_special_tokens=True)
     print(output)
-    return jsonify({'kor_output' : output})
+    return jsonify({'kor_output': output})
+
 
 if __name__ == "__main__":
     app.run(debug=True)
