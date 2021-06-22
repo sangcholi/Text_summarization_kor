@@ -5,11 +5,13 @@ from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
+device = 'cuda' if torch.cuda.is_available() else 'cpu'
+
 
 def load_model():
     model = BartForConditionalGeneration.from_pretrained('./kobart_summary')
     # tokenizer = get_kobart_tokenizer()
-    return model
+    return model.to(device)
 
 
 model = load_model()
@@ -29,7 +31,7 @@ def summarization():
     text = text.replace('\n', '')
     input_ids = tokenizer.encode(text)
     input_ids = torch.tensor(input_ids)
-    input_ids = input_ids.unsqueeze(0)
+    input_ids = input_ids.unsqueeze(0).to(device)
     output = model.generate(input_ids, eos_token_id=1,
                             max_length=512, num_beams=5)
     output = tokenizer.decode(output[0], skip_special_tokens=True)
