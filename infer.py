@@ -10,7 +10,6 @@ device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 def load_model():
     model = BartForConditionalGeneration.from_pretrained('./kobart_summary')
-    # tokenizer = get_kobart_tokenizer()
     return model.to(device)
 
 
@@ -36,7 +35,7 @@ def summarization():
                             max_length=512, num_beams=5)
     output = tokenizer.decode(output[0], skip_special_tokens=True)
     print(output)
-    return jsonify({'kor_output': output})
+    return jsonify({'output': output})
 
 
 if __name__ == "__main__":
